@@ -915,10 +915,26 @@ public class Python {
             "With a single iterable argument, return its biggest item. The\n" +
             "default keyword-only argument specifies an object to return if\n" +
             "the provided iterable is empty.\n" +
-            "With two or more arguments, return the largest argument.\n"
+            "With two or more arguments, return the largest argument.\n",
+        args={"iterable"}
     )
-    public static org.python.Object max() {
-        throw new org.python.exceptions.NotImplementedError("Builtin function 'max' not implemented");
+    public static org.python.Object max(org.python.Object iterable) {
+        // throw new org.python.exceptions.NotImplementedError("Builtin function 'max' not implemented");
+        if (iterable == null) {
+            throw new org.python.exceptions.TypeError("max expected 1 arguments, got 0");
+        } else {
+            org.python.Iterable iterator = org.Python.iter(iterable);
+            java.util.List<org.python.Object> lst = new java.util.ArrayList<org.python.Object>();
+            try {
+                while (true) {
+                    org.python.Object temp = iterator.__next__();
+                    lst.add(temp);
+                }
+            } catch (org.python.exceptions.StopIteration si) {
+            }
+            org.python.Object max = java.util.Collections.max(lst, null);
+            return max;
+        }
     }
 
     @org.python.Method(

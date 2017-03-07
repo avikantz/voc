@@ -2,7 +2,22 @@ from .. utils import TranspileTestCase, BuiltinFunctionTestCase
 
 
 class MaxTests(TranspileTestCase):
-    pass
+
+    def test_max(self):
+        self.assertCodeExecution("""
+            samples = [
+                [1, 5, 3, 2, 4, 9, 12],
+                ["foo", "bar"],
+                ["foo", "bar", "other"],
+                ["ackbar", "balrog", "klingon", "ewok"],
+                [(1, 2), (3, 4), (5, 6, 7)]
+            ]
+            for seq in samples:
+                try:
+                    print(max(seq))
+                except Exception as e:
+                    print(e)
+            """, run_in_function=False)
 
 
 class BuiltinMaxFunctionTests(BuiltinFunctionTestCase, TranspileTestCase):
