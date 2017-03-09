@@ -916,25 +916,39 @@ public class Python {
             "default keyword-only argument specifies an object to return if\n" +
             "the provided iterable is empty.\n" +
             "With two or more arguments, return the largest argument.\n",
-        args={"iterable"}
+        args = {"first"},
+        varargs = "others",
+        kwargs = "kwargs"
     )
-    public static org.python.Object max(org.python.Object iterable) {
-        // throw new org.python.exceptions.NotImplementedError("Builtin function 'max' not implemented");
-        if (iterable == null) {
+    public static org.python.Object max(org.python.Object first, org.python.types.Tuple rest, org.python.types.Dict kwargs) {
+        org.python.Object val;
+        if (first == null) {
             throw new org.python.exceptions.TypeError("max expected 1 arguments, got 0");
         } else {
-            org.python.Iterable iterator = org.Python.iter(iterable);
-            java.util.List<org.python.Object> lst = new java.util.ArrayList<org.python.Object>();
+            val = first;
             try {
-                while (true) {
-                    org.python.Object temp = iterator.__next__();
-                    lst.add(temp);
+                org.python.Iterable iter = rest.__iter__();
+                try {
+                    while (true) {
+                        org.python.Object temp = iter.__next__();
+                        if (val.compareTo(temp) < 0) {
+                            val = temp;
+                        }
+                    }
+                } catch (org.python.exceptions.StopIteration si) {
+
                 }
-            } catch (org.python.exceptions.StopIteration si) {
+            } catch (org.python.exceptions.AttributeError e) {
+                throw new org.python.exceptions.TypeError("'" + rest.typeName() + "' object is not iterable");
             }
-            org.python.Object max = java.util.Collections.max(lst, null);
-            return max;
+            for (java.util.Map.Entry<org.python.Object, org.python.Object> entry : ((org.python.types.Dict) kwargs).value.entrySet()) {
+                if (val.compareTo(entry.getValue()) < 0) {
+                    val = entry.getValue();
+                }
+            }
         }
+        return val;
+
     }
 
     @org.python.Method(
