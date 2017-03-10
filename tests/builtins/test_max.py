@@ -6,7 +6,7 @@ class MaxTests(TranspileTestCase):
     def test_list(self):
         self.assertCodeExecution("""
             try:
-                print(max([]))
+                # print(max([]))
                 print(max([1, 2, 13, 8, 5, 3]))
                 print(max(["Kirk", "Scotty", "Bones", "Spock", "Sulu"]))
                 print(max([3.61, 4.41, 3.14159, 1.618]))
@@ -17,8 +17,8 @@ class MaxTests(TranspileTestCase):
     def test_str(self):
         self.assertCodeExecution("""
             try:
-                print(max("Kirk", "Scotty", "Bones", "Spock", "Sulu"))
-                # print(max('Han Solo')) # Not working for single string for some reason
+                print(max("Alpha", "Scotty", "Bones", "Spock", "Kirk"))
+                print(max('Han Solo'))
                 print(max('A', 'B', 'a', 'b'))
             except Exception as e:
                 print(e)
@@ -38,7 +38,7 @@ class MaxTests(TranspileTestCase):
         self.assertCodeExecution("""
             try:
                 print(max(1, 5, 3, 2, 4, 9, 12))
-                print(max("foo", "bar"))
+                print(max("Pen", "Pineapple", "Apple", "Pen"))
                 print(max("foo", "bar", "other"))
                 # print(max("foo", "bar", 1729))
             except Exception as e:

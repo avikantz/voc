@@ -922,53 +922,44 @@ public class Python {
     )
     public static org.python.Object max(org.python.Object first, org.python.types.Tuple rest, org.python.types.Dict kwargs) {
         org.python.Object val = null;
-        if (first == null) {
-            throw new org.python.exceptions.TypeError("max expected 1 arguments, got 0");
-        } else {
-            org.python.Iterable iter;
-            if (first instanceof org.python.types.List) {
-                if (((org.python.types.List)first).value.isEmpty()) {
-                    throw new org.python.exceptions.ValueError("max() arg is an empty sequence");
+        java.util.List<org.python.Object> generated = new java.util.ArrayList<org.python.Object>();
+        org.python.Iterable iter;
+        try {
+            iter = org.Python.iter(first);
+            try {
+                while (true) {
+                    org.python.Object next = iter.__next__();
+                    generated.add(next);
                 }
-                try {
-                    iter = first.__iter__();
-                    val = iter.__next__();
-                    try {
-                        while (true) {
-                            org.python.Object temp = iter.__next__();
-                            if (val.compareTo(temp) < 0) {
-                                val = temp;
-                            }
-                        }
-                    } catch (org.python.exceptions.StopIteration si) { }
-                } catch (org.python.exceptions.AttributeError e) {
-                    throw new org.python.exceptions.TypeError("'" + first.typeName() + "' object is not iterable");
-                }
-            } else {
-                val = first;
-                try {
-                    iter = rest.__iter__();
-                    try {
-                        while (true) {
-                            org.python.Object temp = iter.__next__();
-                            if (val.compareTo(temp) < 0) {
-                                val = temp;
-                            }
-                        }
-                    } catch (org.python.exceptions.StopIteration si) { }
-                } catch (org.python.exceptions.AttributeError e) {
-                    throw new org.python.exceptions.TypeError("'" + rest.typeName() + "' object is not iterable");
-                }
+            } catch (Exception e) {
+                throw new org.python.exceptions.ValueError("max() arg is an empty sequence");
             }
-            if (kwargs != null) {
-                for (java.util.Map.Entry<org.python.Object, org.python.Object> entry : ((org.python.types.Dict) kwargs).value.entrySet()) {
-                    if (val.compareTo(entry.getValue()) < 0) {
-                        val = entry.getValue();
+        } catch (org.python.exceptions.AttributeError e) {
+            val = first;
+        } finally {
+            try {
+                iter = org.Python.iter(rest);
+                try {
+                    while (true) {
+                        org.python.Object next = iter.__next__();
+                        generated.add(next);
+                    }
+                } catch (org.python.exceptions.StopIteration si) { }
+            } catch (org.python.exceptions.AttributeError e) {
+                generated = rest.value;
+                generated.add(first);
+            } finally {
+                val = java.util.Collections.max(generated, null);
+                if (kwargs != null) {
+                    for (java.util.Map.Entry<org.python.Object, org.python.Object> entry : ((org.python.types.Dict) kwargs).value.entrySet()) {
+                        if (val.compareTo(entry.getValue()) < 0) {
+                            val = entry.getValue();
+                        }
                     }
                 }
+                return val;
             }
         }
-        return val;
     }
 
     @org.python.Method(
