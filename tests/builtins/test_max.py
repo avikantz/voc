@@ -3,6 +3,27 @@ from .. utils import TranspileTestCase, BuiltinFunctionTestCase
 
 class MaxTests(TranspileTestCase):
 
+    def test_list(self):
+        self.assertCodeExecution("""
+            try:
+                print(max([]))
+                print(max([1, 2, 13, 8, 5, 3]))
+                print(max(["Kirk", "Scotty", "Bones", "Spock", "Sulu"]))
+                print(max([3.61, 4.41, 3.14159, 1.618]))
+            except Exception as e:
+                print(e)
+            """, run_in_function=False)
+
+    def test_str(self):
+        self.assertCodeExecution("""
+            try:
+                print(max("Kirk", "Scotty", "Bones", "Spock", "Sulu"))
+                # print(max('Han Solo')) # Not working for single string for some reason
+                print(max('A', 'B', 'a', 'b'))
+            except Exception as e:
+                print(e)
+            """, run_in_function=False)  
+
     def test_tuple(self):
         self.assertCodeExecution("""
             try:
@@ -38,7 +59,6 @@ class BuiltinMaxFunctionTests(BuiltinFunctionTestCase, TranspileTestCase):
         'test_float',
         'test_frozenset',
         'test_int',
-        'test_list',
         'test_None',
         'test_NotImplemented',
         'test_range',
