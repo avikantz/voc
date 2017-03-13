@@ -932,16 +932,16 @@ public class Python {
     }
 
     @org.python.Method(
-        __doc__ = "max(iterable, *[, default=obj, key=func]) -> value" +
-            "max(arg1, arg2, *args, *[, key=func]) -> value\n" +
-            "\n" +
-            "With a single iterable argument, return its biggest item. The\n" +
-            "default keyword-only argument specifies an object to return if\n" +
-            "the provided iterable is empty.\n" +
-            "With two or more arguments, return the largest argument.\n",
-        args = {"first"},
-        varargs = "others",
-        kwargs = "kwargs"
+            __doc__ = "max(iterable, *[, default=obj, key=func]) -> value" +
+                "max(arg1, arg2, *args, *[, key=func]) -> value\n" +
+                "\n" +
+                "With a single iterable argument, return its biggest item. The\n" +
+                "default keyword-only argument specifies an object to return if\n" +
+                "the provided iterable is empty.\n" +
+                "With two or more arguments, return the largest argument.\n",
+            args = {"first"},
+            varargs = "others",
+            kwargs = "kwargs"
     )
     public static org.python.Object max(org.python.Object first, org.python.types.Tuple rest, org.python.types.Dict kwargs) {
         org.python.Object val = null;
