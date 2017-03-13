@@ -22,7 +22,7 @@ class MaxTests(TranspileTestCase):
                 print(max('A', 'B', 'a', 'b'))
             except Exception as e:
                 print(e)
-            """, run_in_function=False)  
+            """, run_in_function=False)
 
     def test_tuple(self):
         self.assertCodeExecution("""
